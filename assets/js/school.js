@@ -1,5 +1,5 @@
-﻿/* ==========================================================================
-   school.js â€” the data-entry side: list, filters, create / edit / delete
+?/* ==========================================================================
+   school.js — the data-entry side: list, filters, create / edit / delete
    ========================================================================== */
 window.TVET = window.TVET || {};
 
@@ -86,7 +86,7 @@ TVET.School = (function () {
 
     html += '</tbody></table>' +
       '<p class="tablefoot">Showing ' + rows.length + ' of ' + app.schools.length +
-      ' records Â· target is ' + D.TARGET_SCHOOLS + ' schools.</p>';
+      ' records · target is ' + D.TARGET_SCHOOLS + ' schools.</p>';
 
     host.innerHTML = html;
   }
@@ -135,7 +135,7 @@ TVET.School = (function () {
         textField("f_month", "Reporting month", s.reportingMonth, "month") +
       '</div></fieldset>' +
 
-      '<fieldset><legend>Objective 1 Â· ICT infrastructure</legend><div class="fields">' +
+      '<fieldset><legend>Objective 1 · ICT infrastructure</legend><div class="fields">' +
         textField("f_delivered", "Computers delivered", s.computersDelivered, "number", 'min="0"') +
         textField("f_installed", "Computers installed", s.computersInstalled, "number", 'min="0"') +
         textField("f_labs", "Equipped computer labs", s.labs, "number", 'min="0"') +
@@ -145,7 +145,7 @@ TVET.School = (function () {
           [["reliable","Reliable"],["intermittent","Intermittent"],["unreliable","Unreliable"]], s.power) +
       '</div></fieldset>' +
 
-      '<fieldset><legend>Objective 2 Â· Teacher capacity</legend><div class="fields">' +
+      '<fieldset><legend>Objective 2 · Teacher capacity</legend><div class="fields">' +
         textField("f_tTotal", "TVET teachers in post", s.teachersTotal, "number", 'min="0"') +
         textField("f_tTrained", "Teachers trained in blended learning", s.teachersTrained, "number", 'min="0"') +
         textField("f_tCert", "Teachers certified", s.teachersCertified, "number", 'min="0"') +
@@ -158,7 +158,7 @@ TVET.School = (function () {
         textField("f_portal", "Students active on the TVET Skills Portal", s.portalActive, "number", 'min="0"') +
       '</div></fieldset>' +
 
-      '<fieldset><legend>Objective 3 Â· Data reporting</legend><div class="fields">' +
+      '<fieldset><legend>Objective 3 · Data reporting</legend><div class="fields">' +
         textField("f_submitted", "Last data submission", s.dataSubmitted, "date") +
         selectField("f_monitor", "Quality Monitoring Dashboard in use",
           [["yes","Yes"],["no","No"]], s.monitoringAdopted) +
