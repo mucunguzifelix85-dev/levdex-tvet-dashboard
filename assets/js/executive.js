@@ -167,3 +167,14 @@ TVET.Executive = (function () {
 
   return { init: init, render: render };
 })();
+
+/* ---------------- download all ---------------- */
+document.addEventListener("DOMContentLoaded", function () {
+  var downloadBtn = document.getElementById("btnExecDownload");
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", function () {
+      var allSchools = []; // TODO: replace with TVET.Data / TVET.Store list of all schools
+      TVET.IO.downloadAllCSV(allSchools);
+    });
+  }
+});

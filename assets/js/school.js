@@ -271,3 +271,33 @@ TVET.School = (function () {
     currentId: function () { return editingId; }
   };
 })();
+
+/* ---------------- import / export / download ---------------- */
+document.addEventListener("DOMContentLoaded", function () {
+  var importBtn = document.getElementById("btnSchoolImport");
+  var fileInput = document.getElementById("schoolImportFile");
+  var exportBtn = document.getElementById("btnSchoolExport");
+  var downloadBtn = document.getElementById("btnSchoolDownload");
+
+  if (importBtn && fileInput) {
+    importBtn.addEventListener("click", function () { fileInput.click(); });
+    fileInput.addEventListener("change", function () {
+      TVET.IO.importFile(fileInput, function (data) {
+        // TODO: merge `data` into TVET.Store for the current school, then re-render
+        console.log("Imported:", data);
+      });
+    });
+  }
+  if (exportBtn) {
+    exportBtn.addEventListener("click", function () {
+      var school = TVET.Auth.user(); // replace with actual current school record lookup
+      TVET.IO.exportSchoolJSON(school);
+    });
+  }
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", function () {
+      var school = TVET.Auth.user(); // replace with actual current school record lookup
+      TVET.IO.downloadSchoolCSV(school);
+    });
+  }
+});
