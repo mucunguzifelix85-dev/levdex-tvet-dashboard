@@ -1,4 +1,4 @@
-/* ==========================================================================
+?/* ==========================================================================
    data.js — model, seed records, validation, derived metrics
    ========================================================================== */
 window.TVET = window.TVET || {};
@@ -13,7 +13,7 @@ TVET.Data = (function () {
   /* project window: May 2024 – Jan 2028, reporting month August 2026 */
   var PROJECT = {
     start: "2024-05", end: "2028-01", months: 44,
-    reportingMonth: "2026-08", elapsedMonths: 28
+    reportingMonth: "2026-08", elapsedMonths: 27
   };
 
   function uid() { return "s_" + Math.random().toString(36).slice(2, 9); }
