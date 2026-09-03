@@ -150,6 +150,13 @@
             <h2>School-by-school</h2>
             <p>Every reporting school, ranked by a delivery score averaging equipment installation, teacher training and portal reach.</p>
           </div>
+          <div class="toolbar">
+            <select id="execDownloadScope" aria-label="Choose schools to download">
+              <option value="">All schools</option>
+            </select>
+            <button type="button" class="btn" id="btnExecSchoolDownloadCSV">Download CSV</button>
+            <button type="button" class="btn" id="btnExecSchoolDownloadPDF">Download PDF</button>
+          </div>
           <div class="card card--flush"><div class="tablewrap" id="execSchools"></div></div>
         </section>
 
@@ -360,6 +367,7 @@
 <script src="assets/js/app.js"></script>
 </body>
 </html>
+
 
 
 

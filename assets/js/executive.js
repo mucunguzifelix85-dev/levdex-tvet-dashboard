@@ -129,6 +129,18 @@ TVET.Executive = (function () {
       return D.delivery(b) - D.delivery(a);
     });
 
+    var scopeSel = document.getElementById("execDownloadScope");
+    if (scopeSel) {
+      var prevVal = scopeSel.value;
+      scopeSel.innerHTML = '<option value="">All schools</option>' +
+        ranked.map(function (s) {
+          return '<option value="' + s.id + '">' + U.esc(s.name || "Untitled school") + '</option>';
+        }).join("");
+      if (prevVal && ranked.some(function (s) { return s.id === prevVal; })) {
+        scopeSel.value = prevVal;
+      }
+    }
+
     var html = '<table class="table"><thead><tr>' +
       '<th>School</th><th>Province</th><th class="right">Students</th>' +
       '<th class="right">Trained</th><th class="right">Installed</th>' +
@@ -182,7 +194,36 @@ document.addEventListener("DOMContentLoaded", function () {
       TVET.IO.downloadAllPDF(TVET.App.schools, "Executive Report");
     });
   }
+
+  function scopedSchools() {
+    var sel = document.getElementById("execDownloadScope");
+    var id = sel ? sel.value : "";
+    if (!id) return TVET.App.schools;
+    return TVET.App.schools.filter(function (s) { return s.id === id; });
+  }
+  function scopedTitle() {
+    var sel = document.getElementById("execDownloadScope");
+    var id = sel ? sel.value : "";
+    if (!id) return "Executive Report - All Schools";
+    var opt = sel.options[sel.selectedIndex];
+    return opt ? opt.textContent : "School Report";
+  }
+
+  var scopeCsvBtn = document.getElementById("btnExecSchoolDownloadCSV");
+  if (scopeCsvBtn) {
+    scopeCsvBtn.addEventListener("click", function () {
+      TVET.IO.downloadAllCSV(scopedSchools());
+    });
+  }
+  var scopePdfBtn = document.getElementById("btnExecSchoolDownloadPDF");
+  if (scopePdfBtn) {
+    scopePdfBtn.addEventListener("click", function () {
+      TVET.IO.downloadAllPDF(scopedSchools(), scopedTitle());
+    });
+  }
 });
+
+
 
 
 
