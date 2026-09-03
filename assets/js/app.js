@@ -26,13 +26,7 @@
       title: "School records",
       sub: "Add, edit and maintain the record for each of the 11 target schools.",
       sections: []
-    },
-    attendance: {
-      title: "Training attendance",
-      sub: "Register teachers and students, then tick who attended each training session.",
-      sections: []
-    }
-  };
+    }  };
 
   /* ---------------- shared state ---------------- */
   var app = {
@@ -57,8 +51,6 @@
     app.view = view;
     $("viewExec").hidden = view !== "exec";
     $("viewSchool").hidden = view !== "school";
-    var viewAttendance = document.getElementById("viewAttendance");
-    if (viewAttendance) viewAttendance.hidden = view !== "attendance";
     $("pageTitle").textContent = PAGES[view].title;
     $("pageSub").textContent = PAGES[view].sub;
     $("btnAddTop").hidden = view !== "school";
@@ -228,4 +220,5 @@
     }
   })();
 })();
+
 

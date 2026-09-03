@@ -34,96 +34,104 @@ TVET.Attendance = (function () {
     return s ? (s.name || "Untitled school") : "Unknown school";
   }
 
-  /* ================= build DOM: nav link, School panel, Executive rollup ================= */
+  /* ================= build DOM: inside School records, plus Executive rollup ================= */
   function buildUI() {
-    var nav = document.querySelector('nav.sidebar__nav[aria-label="Dashboards"]') ||
-              document.querySelector('nav.sidebar__nav');
-    if (nav && !document.querySelector('[data-view="attendance"]')) {
-      var navBtn = document.createElement("button");
-      navBtn.type = "button";
-      navBtn.className = "navlink";
-      navBtn.setAttribute("data-view", "attendance");
-      navBtn.innerHTML =
-        '<span class="navlink__icon" aria-hidden="true">' +
-          '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">' +
-            '<rect x="4" y="3" width="12" height="14" rx="1.5"/><path d="M7.5 8.5l2 2 3-3.5"/>' +
-          '</svg>' +
-        '</span><span>Training attendance</span>';
-      nav.appendChild(navBtn);
-    }
+    var schoolView = document.getElementById("viewSchool");
+    if (schoolView && !document.getElementById("sec-attendance-school")) {
+      var footer = schoolView.querySelector(".pagefoot");
 
-    var main = document.getElementById("main");
-    if (main && !document.getElementById("viewAttendance")) {
-      var view = document.createElement("div");
-      view.className = "view";
-      view.id = "viewAttendance";
-      view.hidden = true;
-      view.innerHTML =
-        '<section class="block">' +
-          '<div class="block__head"><h2>Register a teacher or student</h2>' +
-          '<p>Add each person once. A supervisor then ticks who is present for every training session below.</p></div>' +
-          '<div class="card"><div class="fields">' +
-            '<div class="field"><label for="attendanceTraineeName">Full name</label><input id="attendanceTraineeName" type="text" placeholder="Full name"></div>' +
-            '<div class="field"><label for="attendanceTraineeRole">Role</label><select id="attendanceTraineeRole"><option value="teacher">Teacher</option><option value="student">Student</option></select></div>' +
-            '<div class="field"><label for="attendanceTraineeSchool">School</label><select id="attendanceTraineeSchool">' + schoolOptions() + '</select></div>' +
-            '<div class="field"><label for="attendanceTraineePhone">Phone (optional)</label><input id="attendanceTraineePhone" type="text" placeholder="Phone"></div>' +
-            '<div class="field"><label for="attendanceTraineeEmail">Email (optional)</label><input id="attendanceTraineeEmail" type="email" placeholder="Email"></div>' +
-          '</div>' +
-          '<button type="button" class="btn btn--primary" data-attendance-act="add-trainee" style="margin-top:12px;">Add to roster</button>' +
-          '</div>' +
-          '<div class="card card--flush"><div id="attendanceRoster"></div></div>' +
-        '</section>' +
+      var sec = document.createElement("section");
+      sec.className = "block";
+      sec.id = "sec-attendance-school";
+      sec.innerHTML =
+        '<div class="block__head">' +
+          '<h2>Training attendance</h2>' +
+          '<p>Register each teacher or student once, run a training session, then tick who was present. A supervisor completes this form.</p>' +
+        '</div>' +
 
-        '<section class="block">' +
-          '<div class="block__head"><h2>Start a training session</h2>' +
-          '<p>Create a session for a school and date, then tick attendance below.</p></div>' +
-          '<div class="card"><div class="fields">' +
-            '<div class="field"><label for="attendanceSessionTitle">Session title</label><input id="attendanceSessionTitle" type="text" placeholder="e.g. Blended learning refresher"></div>' +
-            '<div class="field"><label for="attendanceSessionSchool">School</label><select id="attendanceSessionSchool">' + schoolOptions() + '</select></div>' +
-            '<div class="field"><label for="attendanceSessionDate">Date</label><input id="attendanceSessionDate" type="date"></div>' +
+        '<div class="card">' +
+          '<h3 class="card__title">Register a teacher or student</h3>' +
+          '<div class="fields">' +
+            '<div class="field"><label for="attendanceTraineeName">Full name</label>' +
+              '<input id="attendanceTraineeName" type="text" placeholder="e.g. Uwase Claudine"></div>' +
+            '<div class="field"><label for="attendanceTraineeRole">Role</label>' +
+              '<select id="attendanceTraineeRole"><option value="teacher">Teacher</option><option value="student">Student</option></select></div>' +
+            '<div class="field"><label for="attendanceTraineeSchool">School</label>' +
+              '<select id="attendanceTraineeSchool">' + schoolOptions() + '</select></div>' +
+            '<div class="field"><label for="attendanceTraineePhone">Phone</label>' +
+              '<input id="attendanceTraineePhone" type="text" placeholder="Optional"></div>' +
+            '<div class="field field--wide"><label for="attendanceTraineeEmail">Email</label>' +
+              '<input id="attendanceTraineeEmail" type="email" placeholder="Optional"></div>' +
           '</div>' +
-          '<button type="button" class="btn btn--primary" data-attendance-act="start-session" style="margin-top:12px;">Start session</button>' +
+          '<div id="attendanceTraineeError" hidden></div>' +
+          '<button type="button" class="btn btn--primary" data-attendance-act="add-trainee" style="margin-top:14px;">Add to roster</button>' +
+        '</div>' +
+
+        '<div class="card card--flush">' +
+          '<h3 class="card__title" style="padding:18px 18px 0;">Roster</h3>' +
+          '<div id="attendanceRoster"></div>' +
+        '</div>' +
+
+        '<div class="card">' +
+          '<h3 class="card__title">Start a training session</h3>' +
+          '<div class="fields">' +
+            '<div class="field field--wide"><label for="attendanceSessionTitle">Session title</label>' +
+              '<input id="attendanceSessionTitle" type="text" placeholder="e.g. Blended learning refresher, Term 3"></div>' +
+            '<div class="field"><label for="attendanceSessionSchool">School</label>' +
+              '<select id="attendanceSessionSchool">' + schoolOptions() + '</select></div>' +
+            '<div class="field"><label for="attendanceSessionDate">Date</label>' +
+              '<input id="attendanceSessionDate" type="date"></div>' +
           '</div>' +
-        '</section>' +
+          '<div id="attendanceSessionError" hidden></div>' +
+          '<button type="button" class="btn btn--primary" data-attendance-act="start-session" style="margin-top:14px;">Start session</button>' +
+        '</div>' +
 
-        '<section class="block">' +
-          '<div class="block__head"><h2>Take attendance</h2>' +
-          '<p>Choose a session, then tick who is present. Anyone left unticked is recorded as absent.</p></div>' +
-          '<div class="card">' +
-            '<div class="field"><label for="attendanceOpenSession">Session</label><select id="attendanceOpenSession"></select></div>' +
-            '<div id="attendanceSheet" style="margin-top:14px;"></div>' +
-            '<button type="button" class="btn btn--primary" data-attendance-act="save-attendance" style="margin-top:12px;">Save attendance</button>' +
-          '</div>' +
-        '</section>' +
+        '<div class="card">' +
+          '<h3 class="card__title">Take attendance</h3>' +
+          '<div class="field"><label for="attendanceOpenSession">Session</label>' +
+            '<select id="attendanceOpenSession"></select></div>' +
+          '<div id="attendanceSheet" style="margin-top:16px;"></div>' +
+          '<button type="button" class="btn btn--primary" data-attendance-act="save-attendance" style="margin-top:14px;">Save attendance</button>' +
+        '</div>' +
 
-        '<section class="block">' +
-          '<div class="block__head"><h2>Session history</h2></div>' +
-          '<div class="card card--flush"><div id="attendanceHistory"></div></div>' +
-        '</section>' +
+        '<div class="card card--flush">' +
+          '<h3 class="card__title" style="padding:18px 18px 0;">Session history</h3>' +
+          '<div id="attendanceHistory"></div>' +
+        '</div>';
 
-        '<footer class="pagefoot"><p class="pagefoot__note">Confidential — for internal and donor briefing use.</p></footer>';
-      main.appendChild(view);
+      if (footer) schoolView.insertBefore(sec, footer);
+      else schoolView.appendChild(sec);
     }
 
     var execView = document.getElementById("viewExec");
     if (execView && !document.getElementById("sec-attendance")) {
-      var sec = document.createElement("section");
-      sec.className = "block";
-      sec.id = "sec-attendance";
-      sec.innerHTML =
+      var execSec = document.createElement("section");
+      execSec.className = "block";
+      execSec.id = "sec-attendance";
+      execSec.innerHTML =
         '<div class="block__head"><h2>Training attendance</h2>' +
         '<p>Who attended training, by session and school, as recorded by school supervisors.</p></div>' +
         '<div class="card card--flush"><div id="execAttendance" style="padding:16px;"></div></div>';
       var pagefoot = execView.querySelector(".pagefoot");
-      if (pagefoot) execView.insertBefore(sec, pagefoot);
-      else execView.appendChild(sec);
+      if (pagefoot) execView.insertBefore(execSec, pagefoot);
+      else execView.appendChild(execSec);
     }
   }
 
   /* ================= roster ================= */
+  function showError(id, message) {
+    var box = document.getElementById(id);
+    if (!box) return;
+    if (!message) { box.hidden = true; return; }
+    box.hidden = false;
+    box.className = "formerror";
+    box.textContent = message;
+  }
+
   function addTrainee(data) {
-    if (!data.name || !data.name.trim()) { alert("Full name is required."); return; }
-    if (!data.schoolId) { alert("Please select a school."); return; }
+    if (!data.name || !data.name.trim()) { showError("attendanceTraineeError", "Full name is required."); return; }
+    if (!data.schoolId) { showError("attendanceTraineeError", "Please select a school."); return; }
+    showError("attendanceTraineeError", null);
     state.trainees.push({
       id: uid(), name: data.name.trim(),
       role: data.role === "student" ? "student" : "teacher",
@@ -134,6 +142,7 @@ TVET.Attendance = (function () {
     persist();
     renderRoster();
     renderSessionAttendance();
+    if (U && U.toast) U.toast("Added " + data.name.trim() + " to the roster");
   }
 
   function removeTrainee(id) {
@@ -164,9 +173,10 @@ TVET.Attendance = (function () {
 
   /* ================= sessions ================= */
   function startSession(data) {
-    if (!data.title || !data.title.trim()) { alert("Give the training session a title."); return; }
-    if (!data.schoolId) { alert("Please select a school."); return; }
-    if (!data.date) { alert("Please choose a date."); return; }
+    if (!data.title || !data.title.trim()) { showError("attendanceSessionError", "Give the training session a title."); return; }
+    if (!data.schoolId) { showError("attendanceSessionError", "Please select a school."); return; }
+    if (!data.date) { showError("attendanceSessionError", "Please choose a date."); return; }
+    showError("attendanceSessionError", null);
     var session = { id: uid(), title: data.title.trim(), date: data.date, schoolId: data.schoolId };
     state.sessions.unshift(session);
     state.attendance[session.id] = {};
@@ -175,6 +185,7 @@ TVET.Attendance = (function () {
     renderSessionPicker();
     renderSessionAttendance();
     renderSessionHistory();
+    if (U && U.toast) U.toast("Session started: " + session.title);
   }
 
   function setPresence(sessionId, traineeId, present) {
@@ -316,15 +327,15 @@ TVET.Attendance = (function () {
         persist();
         renderSessionHistory();
         renderExecutiveRollup();
-        if (TVET.UI && TVET.UI.toast) TVET.UI.toast("Attendance saved");
+        if (U && U.toast) U.toast("Attendance saved");
         return;
       }
 
       var toExec = e.target.closest('[data-view="exec"], [data-gate-view="exec"]');
       if (toExec) setTimeout(renderExecutiveRollup, 60);
 
-      var toAttendance = e.target.closest('[data-view="attendance"]');
-      if (toAttendance) setTimeout(refreshAll, 60);
+      var toSchool = e.target.closest('[data-view="school"], [data-gate-view="school"]');
+      if (toSchool) setTimeout(refreshAll, 60);
     });
 
     document.addEventListener("change", function (e) {
