@@ -26,6 +26,11 @@
       title: "School records",
       sub: "Add, edit and maintain the record for each of the 11 target schools.",
       sections: []
+    },
+    users: {
+      title: "Manage users",
+      sub: "Visible to Super user only.",
+      sections: []
     }
   };
 
@@ -53,6 +58,8 @@
     app.view = view;
     $("viewExec").hidden = view !== "exec";
     $("viewSchool").hidden = view !== "school";
+    var viewUsers = document.getElementById("viewUsers");
+    if (viewUsers) viewUsers.hidden = view !== "users";
     $("pageTitle").textContent = PAGES[view].title;
     $("pageSub").textContent = PAGES[view].sub;
     $("btnAddTop").hidden = view !== "school";
@@ -210,4 +217,5 @@
     setView("exec");
   })();
 })();
+
 

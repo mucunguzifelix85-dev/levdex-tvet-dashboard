@@ -398,3 +398,21 @@ legend{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(
 }
 
 
+
+/* ---------- role-based visibility ---------- */
+body:not(.role-super) #navUsers,
+body:not(.role-super) #viewUsers { display:none !important; }
+
+body.role-datamanager [data-act="delete"],
+body.role-datamanager #btnDeleteCurrent,
+body.role-datamanager #btnSchoolImport,
+body.role-datamanager #btnSchoolExport,
+body.role-datamanager #btnSchoolDownload,
+body.role-datamanager #btnSchoolDownloadPDF,
+body.role-datamanager #btnImport,
+body.role-datamanager #btnExport,
+body.role-datamanager #btnExecDownload,
+body.role-datamanager #btnExecDownloadPDF,
+body.role-datamanager #btnExecSchoolDownloadCSV,
+body.role-datamanager #btnExecSchoolDownloadPDF,
+body.role-datamanager #execDownloadScope { display:none !important; }
