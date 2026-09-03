@@ -88,31 +88,45 @@ TVET.IO = (function () {
   }
 
   function downloadAllPDF(schools, title) {
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-      alert("PDF library did not load. Check your internet connection and try again.");
-      return;
-    }
     if (!schools || !schools.length) {
       alert("There is nothing to export yet.");
       return;
     }
-    var doc = new window.jspdf.jsPDF({ orientation: "landscape" });
-    doc.setFontSize(14);
-    doc.text(title || "TVET School Records", 14, 15);
-    doc.setFontSize(9);
-    doc.text("Generated " + new Date().toLocaleString(), 14, 21);
+    var esc = function (v) { return (v === null || v === undefined) ? "" : String(v); };
+    var cols = [
+      ["name", "School"], ["district", "District"], ["province", "Province"],
+      ["status", "Status"], ["studentsEnrolled", "Students"],
+      ["teachersTrained", "Trained"], ["teachersTotal", "Teachers"],
+      ["computersInstalled", "Installed"], ["computersDelivered", "Delivered"],
+      ["connectivity", "Network"], ["power", "Power"], ["reportingMonth", "Month"]
+    ];
+    var rowsHtml = schools.map(function (s) {
+      return "<tr>" + cols.map(function (c) {
+        return "<td>" + esc(s[c[0]]) + "</td>";
+      }).join("") + "</tr>";
+    }).join("");
+    var headHtml = "<tr>" + cols.map(function (c) {
+      return "<th>" + c[1] + "</th>";
+    }).join("") + "</tr>";
 
-    var cols = ["name", "district", "province", "status", "studentsEnrolled",
-                "teachersTrained", "teachersTotal", "computersInstalled",
-                "computersDelivered", "connectivity", "power", "reportingMonth"];
-    var head = [["School", "District", "Province", "Status", "Students",
-                 "Trained", "Teachers", "Installed", "Delivered", "Network", "Power", "Month"]];
-    var body = schools.map(function (s) {
-      return cols.map(function (c) { return s[c] === undefined || s[c] === null ? "" : String(s[c]); });
-    });
-
-    doc.autoTable({ head: head, body: body, startY: 26, styles: { fontSize: 7 } });
-    doc.save((title || "tvet-records").replace(/\s+/g, "-").toLowerCase() + ".pdf");
+    var win = window.open("", "_blank");
+    win.document.write(
+      "<html><head><title>" + esc(title) + "</title><style>" +
+      "body{font-family:Arial,sans-serif;padding:20px;}" +
+      "h1{font-size:18px;margin-bottom:4px;}" +
+      "p{font-size:11px;color:#555;margin-top:0;}" +
+      "table{border-collapse:collapse;width:100%;font-size:10px;}" +
+      "th,td{border:1px solid #ccc;padding:4px 6px;text-align:left;}" +
+      "th{background:#f0f0f0;}" +
+      "@media print{@page{size:landscape;}}" +
+      "</style></head><body>" +
+      "<h1>" + esc(title || "TVET School Records") + "</h1>" +
+      "<p>Generated " + new Date().toLocaleString() + "</p>" +
+      "<table><thead>" + headHtml + "</thead><tbody>" + rowsHtml + "</tbody></table>" +
+      "<script>window.onload = function(){ window.print(); };<\/script>" +
+      "</body></html>"
+    );
+    win.document.close();
   }
 
   return {
@@ -124,4 +138,5 @@ TVET.IO = (function () {
     downloadAllPDF: downloadAllPDF
   };
 })();
+
 
