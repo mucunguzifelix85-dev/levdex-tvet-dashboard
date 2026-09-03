@@ -176,6 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
       TVET.IO.downloadAllCSV(TVET.App.schools);
     });
   }
+  var downloadPdfBtn = document.getElementById("btnExecDownloadPDF");
+  if (downloadPdfBtn) {
+    downloadPdfBtn.addEventListener("click", function () {
+      TVET.IO.downloadAllPDF(TVET.App.schools, "Executive Report");
+    });
+  }
 });
+
 
 

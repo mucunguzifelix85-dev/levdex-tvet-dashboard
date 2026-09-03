@@ -87,11 +87,41 @@ TVET.IO = (function () {
     download("tvet-all-schools.json", JSON.stringify(schools, null, 2), "application/json");
   }
 
+  function downloadAllPDF(schools, title) {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      alert("PDF library did not load. Check your internet connection and try again.");
+      return;
+    }
+    if (!schools || !schools.length) {
+      alert("There is nothing to export yet.");
+      return;
+    }
+    var doc = new window.jspdf.jsPDF({ orientation: "landscape" });
+    doc.setFontSize(14);
+    doc.text(title || "TVET School Records", 14, 15);
+    doc.setFontSize(9);
+    doc.text("Generated " + new Date().toLocaleString(), 14, 21);
+
+    var cols = ["name", "district", "province", "status", "studentsEnrolled",
+                "teachersTrained", "teachersTotal", "computersInstalled",
+                "computersDelivered", "connectivity", "power", "reportingMonth"];
+    var head = [["School", "District", "Province", "Status", "Students",
+                 "Trained", "Teachers", "Installed", "Delivered", "Network", "Power", "Month"]];
+    var body = schools.map(function (s) {
+      return cols.map(function (c) { return s[c] === undefined || s[c] === null ? "" : String(s[c]); });
+    });
+
+    doc.autoTable({ head: head, body: body, startY: 26, styles: { fontSize: 7 } });
+    doc.save((title || "tvet-records").replace(/\s+/g, "-").toLowerCase() + ".pdf");
+  }
+
   return {
     exportSchoolJSON: exportSchoolJSON,
     downloadSchoolCSV: downloadSchoolCSV,
     importFile: importFile,
     downloadAllCSV: downloadAllCSV,
-    downloadAllJSON: downloadAllJSON
+    downloadAllJSON: downloadAllJSON,
+    downloadAllPDF: downloadAllPDF
   };
 })();
+
