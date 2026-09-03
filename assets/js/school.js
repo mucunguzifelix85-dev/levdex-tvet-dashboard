@@ -283,20 +283,25 @@ document.addEventListener("DOMContentLoaded", function () {
     importBtn.addEventListener("click", function () { fileInput.click(); });
     fileInput.addEventListener("change", function () {
       TVET.IO.importFile(fileInput, function (data) {
-        // TODO: merge `data` into TVET.Store for the current school, then re-render
-        console.log("Imported:", data);
+        var list = Array.isArray(data) ? data : (data && data.schools) || [];
+        if (!list.length) { alert("No records found in that file."); return; }
+        TVET.App.schools = list.map(function (r) {
+          return Object.assign(TVET.Data.blank(), r, { id: r.id || TVET.Data.uid() });
+        });
+        TVET.App.commit();
       });
     });
   }
   if (exportBtn) {
     exportBtn.addEventListener("click", function () {
-      TVET.IO.downloadAllJSON(app.schools);
+      TVET.IO.downloadAllJSON(TVET.App.schools);
     });
   }
   if (downloadBtn) {
     downloadBtn.addEventListener("click", function () {
-      TVET.IO.downloadAllCSV(app.schools);
+      TVET.IO.downloadAllCSV(TVET.App.schools);
     });
   }
 });
+
 

@@ -173,8 +173,9 @@ document.addEventListener("DOMContentLoaded", function () {
   var downloadBtn = document.getElementById("btnExecDownload");
   if (downloadBtn) {
     downloadBtn.addEventListener("click", function () {
-      TVET.IO.downloadAllCSV(app.schools);
+      TVET.IO.downloadAllCSV(TVET.App.schools);
     });
   }
 });
+
 

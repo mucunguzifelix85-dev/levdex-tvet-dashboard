@@ -1,5 +1,5 @@
-/* ==========================================================================
-   app.js — controller: shared state, view routing, events, import / export
+﻿/* ==========================================================================
+   app.js â€” controller: shared state, view routing, events, import / export
    ========================================================================== */
 (function () {
   "use strict";
@@ -38,13 +38,15 @@
     commit: function () {
       Store.save(app.schools).then(function (ok) {
         $("saveStamp").textContent = ok
-          ? Store.label() + " · " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
-          : "Session only — export to keep";
+          ? Store.label() + " Â· " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
+          : "Session only â€” export to keep";
       });
       TVET.School.render();
       TVET.Executive.render();
     }
   };
+
+  window.TVET.App = app;
 
   /* ---------------- routing ---------------- */
   function setView(view) {
@@ -208,3 +210,4 @@
     setView("exec");
   })();
 })();
+
