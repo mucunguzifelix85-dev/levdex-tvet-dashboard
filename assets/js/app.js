@@ -1,5 +1,5 @@
 ﻿/* ==========================================================================
-   app.js â€” controller: shared state, view routing, events, import / export
+   app.js — controller: shared state, view routing, events, import / export
    ========================================================================== */
 (function () {
   "use strict";
@@ -26,11 +26,6 @@
       title: "School records",
       sub: "Add, edit and maintain the record for each of the 11 target schools.",
       sections: []
-    },
-    users: {
-      title: "Manage users",
-      sub: "Visible to Super user only.",
-      sections: []
     }
   };
 
@@ -39,12 +34,11 @@
     schools: [],
     view: "exec",
 
-    /* Called after any mutation: persist, then repaint both views. */
     commit: function () {
       Store.save(app.schools).then(function (ok) {
         $("saveStamp").textContent = ok
-          ? Store.label() + " Â· " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
-          : "Session only â€” export to keep";
+          ? Store.label() + " · " + new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
+          : "Session only — export to keep";
       });
       TVET.School.render();
       TVET.Executive.render();
@@ -58,8 +52,6 @@
     app.view = view;
     $("viewExec").hidden = view !== "exec";
     $("viewSchool").hidden = view !== "school";
-    var viewUsers = document.getElementById("viewUsers");
-    if (viewUsers) viewUsers.hidden = view !== "users";
     $("pageTitle").textContent = PAGES[view].title;
     $("pageSub").textContent = PAGES[view].sub;
     $("btnAddTop").hidden = view !== "school";
@@ -156,26 +148,11 @@
     if (!act) return;
 
     switch (act.dataset.act) {
-      case "add":
-        if (!TVET.Roles.can("add", { verb: "add school records" })) return;
-        TVET.School.openForm(null);
-        break;
-      case "edit":
-        if (!TVET.Roles.can("edit", { verb: "edit school records" })) return;
-        TVET.School.openForm(act.dataset.id);
-        break;
-      case "delete":
-        if (!TVET.Roles.can("delete", { verb: "delete school records" })) return;
-        TVET.School.remove(act.dataset.id);
-        break;
-      case "delete-current":
-        if (!TVET.Roles.can("delete", { verb: "delete school records" })) return;
-        TVET.School.remove(TVET.School.currentId());
-        break;
-      case "save":
-        if (!TVET.Roles.can(TVET.School.currentId() ? "edit" : "add", { verb: "save school records" })) return;
-        TVET.School.save();
-        break;
+      case "add": TVET.School.openForm(null); break;
+      case "edit": TVET.School.openForm(act.dataset.id); break;
+      case "delete": TVET.School.remove(act.dataset.id); break;
+      case "delete-current": TVET.School.remove(TVET.School.currentId()); break;
+      case "save": TVET.School.save(); break;
       case "cancel": TVET.School.closeForm(); break;
       case "clear-filters": TVET.School.clearFilters(); break;
       case "go-school": setView("school"); break;
@@ -196,16 +173,9 @@
 
   $("btnAddTop").addEventListener("click", function () { TVET.School.openForm(null); });
   $("btnPrint").addEventListener("click", function () { window.print(); });
-  $("btnExport").addEventListener("click", function () {
-    if (!TVET.Roles.can("exportData", { verb: "export data" })) return;
-    exportJson();
-  });
-  $("btnImport").addEventListener("click", function () {
-    if (!TVET.Roles.can("import", { verb: "import data" })) return;
-    $("fileInput").click();
-  });
+  $("btnExport").addEventListener("click", exportJson);
+  $("btnImport").addEventListener("click", function () { $("fileInput").click(); });
   $("fileInput").addEventListener("change", function (e) {
-    if (!TVET.Roles.can("import", { verb: "import data" })) { e.target.value = ""; return; }
     if (e.target.files && e.target.files[0]) importJson(e.target.files[0]);
     e.target.value = "";
   });
@@ -236,10 +206,18 @@
     $("saveStamp").textContent = Store.label();
     TVET.School.render();
     TVET.Executive.render();
-    setView("exec");
+
+    var gate = document.getElementById("entryGate");
+    if (gate) {
+      var choices = gate.querySelectorAll("[data-gate-view]");
+      Array.prototype.forEach.call(choices, function (btn) {
+        btn.addEventListener("click", function () {
+          gate.hidden = true;
+          setView(btn.dataset.gateView);
+        });
+      });
+    } else {
+      setView("exec");
+    }
   })();
 })();
-
-
-
-

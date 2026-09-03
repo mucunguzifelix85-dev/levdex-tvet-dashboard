@@ -280,12 +280,8 @@ document.addEventListener("DOMContentLoaded", function () {
   var downloadBtn = document.getElementById("btnSchoolDownload");
 
   if (importBtn && fileInput) {
-    importBtn.addEventListener("click", function () {
-      if (!TVET.Roles.can("import", { verb: "import records" })) return;
-      fileInput.click();
-    });
+    importBtn.addEventListener("click", function () { fileInput.click(); });
     fileInput.addEventListener("change", function () {
-      if (!TVET.Roles.can("import", { verb: "import records" })) return;
       TVET.IO.importFile(fileInput, function (data) {
         var list = Array.isArray(data) ? data : (data && data.schools) || [];
         if (!list.length) { alert("No records found in that file."); return; }
@@ -298,25 +294,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   if (exportBtn) {
     exportBtn.addEventListener("click", function () {
-      if (!TVET.Roles.can("exportData", { verb: "export records" })) return;
       TVET.IO.downloadAllJSON(TVET.App.schools);
     });
   }
   if (downloadBtn) {
     downloadBtn.addEventListener("click", function () {
-      if (!TVET.Roles.can("exportData", { verb: "download records" })) return;
       TVET.IO.downloadAllCSV(TVET.App.schools);
     });
   }
   var downloadPdfBtn = document.getElementById("btnSchoolDownloadPDF");
   if (downloadPdfBtn) {
     downloadPdfBtn.addEventListener("click", function () {
-      if (!TVET.Roles.can("exportData", { verb: "download records" })) return;
       TVET.IO.downloadAllPDF(TVET.App.schools, "School Records");
     });
   }
 });
-
-
-
-

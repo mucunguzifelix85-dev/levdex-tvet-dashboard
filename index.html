@@ -11,6 +11,23 @@
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
+<div class="entrygate" id="entryGate">
+  <div class="entrygate__panel">
+    <span class="entrygate__mark">LUXDEV</span>
+    <h1>Digital skills for quality TVET in Rwanda</h1>
+    <p class="entrygate__sub">Select how you would like to continue.</p>
+    <div class="entrygate__choices">
+      <button type="button" class="entrygate__btn" data-gate-view="exec">
+        <span class="entrygate__btn-title">Executive dashboard</span>
+        <span class="entrygate__btn-sub">Programme-wide rollup and reporting</span>
+      </button>
+      <button type="button" class="entrygate__btn" data-gate-view="school">
+        <span class="entrygate__btn-title">School records</span>
+        <span class="entrygate__btn-sub">Add and manage your school's data</span>
+      </button>
+    </div>
+  </div>
+</div>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -42,25 +59,13 @@
         </span>
         <span>School records</span>
       </button>
-      <button type="button" class="navlink" data-view="users" id="navUsers">
-        <span class="navlink__icon" aria-hidden="true">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="10" cy="7" r="3"/><path d="M4 17c0-3 2.5-5 6-5s6 2 6 5"/>
-          </svg>
-        </span>
-        <span>Manage users</span>
-      </button>
+
     </nav>
 
     <div class="sidebar__nav" id="sectionNav" aria-label="Sections"></div>
 
     <div class="sidebar__foot">
-      <p class="sidebar__label">Role</p>
-      <select id="roleSwitcher" class="sidebtn" aria-label="Switch role" style="width:100%;margin-bottom:10px;">
-        <option value="super">Super user</option>
-        <option value="admin">Admin</option>
-        <option value="datamanager">Data manager</option>
-      </select>
+
       <p class="sidebar__label">Data</p>
       <button type="button" class="sidebtn" id="btnExport">Export JSON</button>
       <button type="button" class="sidebtn" id="btnImport">Import JSON</button>
@@ -374,7 +379,6 @@
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="assets/js/io.js"></script>
-<script src="assets/js/roles.js"></script>
 <script src="assets/js/store.js"></script>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/ui.js"></script>
@@ -383,6 +387,7 @@
 <script src="assets/js/app.js"></script>
 </body>
 </html>
+
 
 
 

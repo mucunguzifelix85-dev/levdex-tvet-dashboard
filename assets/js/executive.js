@@ -185,14 +185,12 @@ document.addEventListener("DOMContentLoaded", function () {
   var downloadBtn = document.getElementById("btnExecDownload");
   if (downloadBtn) {
     downloadBtn.addEventListener("click", function () {
-      if (!TVET.Roles.can("exportData", { verb: "download records" })) return;
       TVET.IO.downloadAllCSV(TVET.App.schools);
     });
   }
   var downloadPdfBtn = document.getElementById("btnExecDownloadPDF");
   if (downloadPdfBtn) {
     downloadPdfBtn.addEventListener("click", function () {
-      if (!TVET.Roles.can("exportData", { verb: "download records" })) return;
       TVET.IO.downloadAllPDF(TVET.App.schools, "Executive Report");
     });
   }
@@ -214,21 +212,13 @@ document.addEventListener("DOMContentLoaded", function () {
   var scopeCsvBtn = document.getElementById("btnExecSchoolDownloadCSV");
   if (scopeCsvBtn) {
     scopeCsvBtn.addEventListener("click", function () {
-      if (!TVET.Roles.can("exportData", { verb: "download records" })) return;
       TVET.IO.downloadAllCSV(scopedSchools());
     });
   }
   var scopePdfBtn = document.getElementById("btnExecSchoolDownloadPDF");
   if (scopePdfBtn) {
     scopePdfBtn.addEventListener("click", function () {
-      if (!TVET.Roles.can("exportData", { verb: "download records" })) return;
       TVET.IO.downloadAllPDF(scopedSchools(), scopedTitle());
     });
   }
 });
-
-
-
-
-
-
