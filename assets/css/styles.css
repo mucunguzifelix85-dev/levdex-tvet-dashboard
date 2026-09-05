@@ -1,4 +1,4 @@
-?/* ==========================================================================
+/* ==========================================================================
    LuxDev · TVET Rwanda — project dashboard
    1. Tokens          5. Cards & blocks
    2. Base            6. Tables
@@ -411,3 +411,12 @@ legend{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(
 .entrygate__btn:hover{background:rgba(255,255,255,.08);border-color:var(--lux);}
 .entrygate__btn-title{font-size:15px;font-weight:600;color:#fff;}
 .entrygate__btn-sub{font-size:12.5px;color:var(--ink-3);}
+
+/* ---- Platform tools (sec-tools) ---- */
+.toollist{list-style:none;margin:0;padding:0;}
+.toollist li{padding:12px 0;border-bottom:1px solid var(--rule-soft);}
+.toollist li:last-child{border-bottom:0;}
+.toollist__head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.toollist__head b{font-size:14px;font-weight:600;color:var(--ink);}
+.toollist span{display:block;font-size:13px;color:var(--ink-3);margin-top:2px;}
+.tag--building{color:var(--navy-3);} .tag--building i{background:var(--navy-3);}

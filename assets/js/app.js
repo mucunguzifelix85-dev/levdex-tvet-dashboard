@@ -14,6 +14,7 @@
       sections: [
         ["sec-position", "Programme position"],
         ["sec-objectives", "Objectives"],
+        ["sec-tools", "Platform tools"],
         ["sec-flags", "Flags and risks"],
         ["sec-provinces", "Provinces"],
         ["sec-schools", "School-by-school"],
