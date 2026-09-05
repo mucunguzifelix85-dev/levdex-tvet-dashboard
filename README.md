@@ -1,4 +1,4 @@
-﻿# LuxDev Â· TVET Rwanda â€” project dashboard
+﻿# LuxDev Â· TVET Rwanda - project dashboard
 
 **Live demo:** https://levdex-tvet-dashboard.vercel.app
 
